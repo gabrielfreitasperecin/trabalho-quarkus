@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>
+            Cadastrar pessoa
+        </title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="js/crud_pessoa.js"></script>
+    </head>
+    <body onload="popularEstados();">
+        <h3>Cadastrar pessoa</h3>
+        <div>
+            <div>
+                <span>Id:</span>
+                <input type="text" id="txtId" onchange="buscarPessoa();"/>
+            </div>
+            <div>
+                <span>Nome: </span>
+                <input type="text" id="txtNome"/>
+            </div>
+            <div>
+                <span>CPF: </span>
+                <input type="text" id="txtCpf"/>
+            </div>
+            <div>
+                <span>Idade: </span>
+                <input type="text" id="txtIdade"/>
+            </div>
+            <div>
+                <span>Endereco: </span>
+                <input type="text" id="txtEndereco"/>
+            </div>
+            <div>
+                <span>Estado:</span>
+                <select id="selEstado" onchange="popularCidades();">
+                    <option></option>
+                </select>
+            </div>
+            <div>
+                <span>Cidade:</span>
+                <select id="selCidade" disabled></select>
+            </div>
+            <div>
+                <button onclick="cadastrar();">Cadastrar</button>
+            </div>
+        </div>
+    </body>
+</html>

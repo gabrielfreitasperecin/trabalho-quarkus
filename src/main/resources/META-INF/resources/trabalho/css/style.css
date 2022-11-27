@@ -1,0 +1,17 @@
+#footer {
+    margin-top:auto !important;
+}
+
+body {
+    display:flex;
+    flex-direction:column;
+}
+
+html,body {
+    height: 100%;
+}
+
+table{
+    border-style: solid;
+    text-align: center;
+}
