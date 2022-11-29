@@ -7,6 +7,8 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class Produtos extends PanacheEntity{
 
+    public long id;
+
     public String codProduto;
 
     public String descricao;
@@ -17,8 +19,9 @@ public class Produtos extends PanacheEntity{
 
     public int qtdEstoque;
 
-    // public static List<Produto> findByName(String descricao){
-    //     return find("descricao", descricao).list();
-    // }
+    public static List<Produtos> findByName(String ds_pesquisa){
+        ds_pesquisa = "%"+ds_pesquisa+"%";
+        return find("descricao like ?1 OR codProduto like ?2", ds_pesquisa, ds_pesquisa).list();
+    }
     
 }

@@ -9,7 +9,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -38,11 +37,21 @@ public class ProdutosResource {
         return Response.status(Status.CREATED).entity(produtos).build();
     }
 
+    @GET
+    @Path("/busca")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Produtos> buscarPesquisa(@QueryParam("ds_pesquisa") String ds_pesquisa){
+        if(ds_pesquisa == null){
+            throw new BadRequestException("Enviar o parâmetro descricao");
+        }
+        return Produtos.findByName(ds_pesquisa);
+    }
+
     @DELETE
     @Transactional
-    @Path("/{codProduto}")
-    public Response delete(@PathParam("codProduto") Long codProduto){
-        Produtos entity = Produtos.findById(codProduto);
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id){
+        Produtos entity = Produtos.findById(id);
         if (entity == null){
             throw new NotFoundException();
         }
@@ -50,14 +59,4 @@ public class ProdutosResource {
 
         return Response.status(Status.OK).build();
     }
-
-    // @GET
-    // @Path("/busca")
-    // @Produces(MediaType.APPLICATION_JSON)
-    // public List<Pessoa> buscarPorNome(@QueryParam("nome") String nome){
-    //     if(nome == null){
-    //         throw new BadRequestException("Enviar o parâmetro nome");
-    //     }
-    //     return Pessoa.findByName(nome);
-    // }
 }

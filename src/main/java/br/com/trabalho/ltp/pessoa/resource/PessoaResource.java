@@ -29,12 +29,12 @@ public class PessoaResource {
         return Pessoa.listAll();
     }
 
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Pessoa getById(@PathParam("id") Long id){
-        return Pessoa.findById(id);
-    }
+    // @GET
+    // @Path("/{id}")
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public Pessoa getById(@PathParam("id") Long id){
+    //     return Pessoa.findById(id);
+    // }
 
     @GET
     @Path("/busca")
@@ -59,27 +59,27 @@ public class PessoaResource {
         return Response.status(Status.CREATED).entity(pessoa).build();
     }
 
-    @PUT
-    @Transactional
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public Response update(@PathParam("id") Long id, Pessoa pessoa){
-        Pessoa entity = Pessoa.findById(id);
-        if (entity == null){
-            throw new NotFoundException();
-        }
+    // @PUT
+    // @Transactional
+    // @Consumes(MediaType.APPLICATION_JSON)
+    // @Produces(MediaType.APPLICATION_JSON)
+    // @Path("/{id}")
+    // public Response update(@PathParam("id") Long id, Pessoa pessoa){
+    //     Pessoa entity = Pessoa.findById(id);
+    //     if (entity == null){
+    //         throw new NotFoundException();
+    //     }
 
-        entity.nome = pessoa.nome;
-        entity.cpf = pessoa.cpf;
-        entity.idade = pessoa.idade;
-        entity.endereco = pessoa.endereco;
-        entity.cidade_id = pessoa.cidade_id;
+    //     entity.nome = pessoa.nome;
+    //     entity.cpf = pessoa.cpf;
+    //     entity.idade = pessoa.idade;
+    //     entity.endereco = pessoa.endereco;
+    //     entity.cidade_id = pessoa.cidade_id;
 
-        entity.persist();
+    //     entity.persist();
 
-        return Response.status(Status.OK).entity(entity).build();
-    }
+    //     return Response.status(Status.OK).entity(entity).build();
+    // }
 
     @DELETE
     @Transactional

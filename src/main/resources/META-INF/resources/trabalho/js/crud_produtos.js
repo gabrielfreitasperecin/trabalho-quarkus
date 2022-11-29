@@ -27,7 +27,7 @@ function envia_produto(){
     .then(function (response) {
         alert("Cadastro realizado com sucesso");
         limpar_campos();
-        conteudo_tabela();
+        recupera_dados();
     })
     .catch(function (error) {
 
@@ -42,52 +42,62 @@ function limpar_campos(){
     document.getElementById('quantidade').value = '';
 }
 
-function conteudo_tabela(){
+function conteudo_tabela(response){
+    const dados = response.data;
+    let conteudo_tabela = '';
+    for (let index = 0; index <= dados.length; index++) {
+        if (dados[index]) {
+            let cod_barras          = "<td>"+dados[index]['codProduto']+"</td>";
+            let descricao_produto   = "<td>"+dados[index]['descricao']+"</td>";
+            let valor_custo         = "<td>"+dados[index]['valorCusto']+"</td>";
+            let valor_venda         = "<td>"+dados[index]['valorVenda']+"</td>";
+            let quantidade_produto  = "<td>"+dados[index]['qtdEstoque']+"</td>";
+            let opcoes              = "<td>"+spn_editar(`${dados[index]['id']}`)+spn_remover(`${dados[index]['id']}`)+"</td>";
+            let linha_tabela        = "<tr>"+cod_barras+descricao_produto+valor_custo+valor_venda+quantidade_produto+opcoes+"</tr>";
+            conteudo_tabela         = conteudo_tabela+linha_tabela;
+        } else{
+            continue;
+        }
+    }
+    let tbody       = document.getElementById('tabela_body');
+    tbody.innerHTML = conteudo_tabela;
+}
+
+function recupera_dados() {
     axios.get('http://localhost:8080/produtos', {})
     .then(function (response) {
-        const dados = response.data;
-        let conteudo_tabela = '';
-        for (let index = 0; index <= dados.length; index++) {
-            if (dados[index]) {
-                let descricao_produto   = "<td>"+dados[index]['descricao']+"</td>";
-                let valor_custo         = "<td>"+dados[index]['valorCusto']+"</td>";
-                let valor_venda         = "<td>"+dados[index]['valorVenda']+"</td>";
-                let quantidade_produto  = "<td>"+dados[index]['qtdEstoque']+"</td>";
-                let btn_remover         = "<td>"+spn_remover(`${dados[index]['codProduto']}`)+"</td>";
-                let linha_tabela        = "<tr>"+descricao_produto+valor_custo+valor_venda+quantidade_produto+btn_remover+"</tr>";
-                conteudo_tabela         = conteudo_tabela+linha_tabela;
-            } else{
-                continue;
-            }
-        }
-        let tbody       = document.getElementById('tabela_body');
-        tbody.innerHTML = conteudo_tabela;
+        conteudo_tabela(response);
     })
     .catch(function (error) {
         
     });
 }
 
-function spn_remover(codProduto){
+function spn_editar(id){
+    let spn_class   = "class='badge bg-primary' ";
+    let spn_style   = "style='cursor: pointer; padding: 10px; margin-right: 5px;' ";
+    let spn_onclick = `onclick='remover_linha(${id})'`;
+    let btn_editar = "<span "+spn_class+spn_style+spn_onclick+" >Editar</span>";
+    return btn_editar;
+}
+
+function spn_remover(id){
     let spn_class   = "class='badge bg-danger' ";
-    let spn_style   = "style='cursor: pointer' ";
-    let spn_onclick = `onclick='remover_linha("${codProduto}")'`;
+    let spn_style   = "style='cursor: pointer; padding: 10px;' ";
+    let spn_onclick = `onclick='remover_linha(${id})'`;
     let btn_remover = "<span "+spn_class+spn_style+spn_onclick+" >Excluir</span>";
     return btn_remover;
 }
 
-
-function remover_linha(codProduto){
-    axios.delete('http://localhost:8080/produtos/'+codProduto, {})
+function remover_linha(idProduto){
+    axios.delete(`http://localhost:8080/produtos/${idProduto}`)
     .then(function (response) {
-        console.log('ok');
+        alert("Exclusão realizada com sucesso");
+        recupera_dados();
     })
     .catch(function (error) {
         
     });
-    delete produto[id];
-    exibir_tabela();
-    calcular_total_produtos();
 }
 
 
@@ -104,4 +114,15 @@ function somente_numeros(evento) {
             evento.returnValue = false;
         }
     }
+ }
+
+ function pesquisar(){
+    let inputValue = `${document.getElementById('pesquisa').value}`;
+    axios.get(`http://localhost:8080/produtos/busca?ds_pesquisa=${inputValue}`)
+    .then(function (response) {
+        conteudo_tabela(response);
+    })
+    .catch(function (error) {
+        
+    });
  }
