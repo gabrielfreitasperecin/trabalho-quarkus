@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -35,6 +36,35 @@ public class ProdutosResource {
     public Response create(Produtos produtos){
         produtos.persist();
         return Response.status(Status.CREATED).entity(produtos).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Produtos getById(@PathParam("id") Long id){
+        return Produtos.findById(id);
+    }
+
+    @PUT
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public Response update(@PathParam("id") Long id, Produtos produtos){
+        Produtos entity = Produtos.findById(id);
+        if (entity == null){
+            throw new NotFoundException();
+        }
+
+        entity.codProduto   = produtos.codProduto;
+        entity.descricao    = produtos.descricao;
+        entity.valorCusto   = produtos.valorCusto;
+        entity.valorVenda   = produtos.valorVenda;
+        entity.qtdEstoque   = produtos.qtdEstoque;
+
+        entity.persist();
+
+        return Response.status(Status.OK).entity(entity).build();
     }
 
     @GET
