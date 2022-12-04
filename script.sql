@@ -15,7 +15,7 @@ CREATE TABLE produtos(
 INSERT INTO produtos (codProduto, descricao, valorCusto, valorVenda, qtdEstoque)
 VALUES ('CHUSDOFP', 'Chinelo', '4.99', '14.99', '5');
 INSERT INTO produtos (codProduto, descricao, valorCusto, valorVenda, qtdEstoque)
-VALUES ('NQWUDAUADC', 'NEW BALANCE', '149.99', '299.99', '10');
+VALUES ('NQWUDAUADC', 'New Balance', '149.99', '299.99', '10');
 INSERT INTO produtos (codProduto, descricao, valorCusto, valorVenda, qtdEstoque)
 VALUES ('BJFSDOFOA', 'Bota Oakley', '199.99', '399.99', '7');
 
